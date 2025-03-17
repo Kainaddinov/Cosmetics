@@ -1,0 +1,902 @@
+/* /* *
+  Нормализация блочной модели
+ */
+ *,
+ ::before,
+ ::after {
+   box-sizing: border-box;
+ }
+ 
+ /**
+   Убираем внутренние отступы слева тегам списков,
+   у которых есть атрибут class
+  */
+ :where(ul, ol):where([class]) {
+   padding-left: 0;
+ }
+ 
+ /**
+   Убираем внешние отступы body и двум другим тегам,
+   у которых есть атрибут class
+  */
+ body,
+ :where(blockquote, figure):where([class]) {
+   margin: 0;
+ }
+ 
+ /**
+   Убираем внешние отступы вертикали нужным тегам,
+   у которых есть атрибут class
+  */
+ :where(
+   h1,
+   h2,
+   h3,
+   h4,
+   h5,
+   h6,
+   p,
+   ul,
+   ol,
+   dl
+ ):where([class]) {
+   margin-block: 0;
+ }
+ 
+ :where(dd[class]) {
+   margin-left: 0;
+ }
+ 
+ :where(fieldset[class]) {
+   margin-left: 0;
+   padding: 0;
+   border: none;
+ }
+ 
+ /**
+   Убираем стандартный маркер маркированному списку,
+   у которого есть атрибут class
+  */
+ :where(ul[class]) {
+   list-style: none;
+ }
+ 
+ :where(address[class]) {
+   font-style: normal;
+ }
+ 
+ /**
+   Обнуляем вертикальные внешние отступы параграфа,
+   объявляем локальную переменную для внешнего отступа вниз,
+   чтобы избежать взаимодействие с более сложным селектором
+  */
+ p {
+   --paragraphMarginBottom: 24px;
+ 
+   margin-block: 0;
+ }
+ 
+ /**
+   Внешний отступ вниз для параграфа без атрибута class,
+   который расположен не последним среди своих соседних элементов
+  */
+ p:where(:not([class]):not(:last-child)) {
+   margin-bottom: var(--paragraphMarginBottom);
+ }
+ 
+ 
+ /**
+   Упрощаем работу с изображениями и видео
+  */
+ img,
+ video {
+   display: block;
+   max-width: 100%;
+   height: auto;
+ }
+ 
+ /**
+   Наследуем свойства шрифт для полей ввода
+  */
+ input,
+ textarea,
+ select,
+ button {
+   font: inherit;
+ }
+ 
+ html {
+   /**
+     Пригодится в большинстве ситуаций
+     (когда, например, нужно будет "прижать" футер к низу сайта)
+    */
+   height: 100%;
+   /**
+     Убираем скачок интерфейса по горизонтали
+     при появлении / исчезновении скроллбара
+    */
+   scrollbar-gutter: stable;
+ }
+ 
+ /**
+   Плавный скролл
+  */
+ html,
+ :has(:target) {
+   scroll-behavior: smooth;
+ }
+ 
+ body {
+   /**
+     Пригодится в большинстве ситуаций
+     (когда, например, нужно будет "прижать" футер к низу сайта)
+    */
+   min-height: 100%;
+   /**
+     Унифицированный интерлиньяж
+    */
+   line-height: 1.5;
+ }
+ 
+ /**
+   Нормализация высоты элемента ссылки при его инспектировании в DevTools
+  */
+ a:where([class]) {
+   display: inline-flex;
+ }
+ 
+ /**
+   Курсор-рука при наведении на элемент
+  */
+ button,
+ label {
+   cursor: pointer;
+ }
+ 
+ /**
+   Приводим к единому цвету svg-элементы
+   (за исключением тех, у которых уже указан
+   атрибут fill со значением 'none' или начинается с 'url')
+  */
+ :where([fill]:not(
+   [fill="none"],
+   [fill^="url"]
+ )) {
+   fill: currentColor;
+ }
+ 
+ /**
+   Приводим к единому цвету svg-элементы
+   (за исключением тех, у которых уже указан
+   атрибут stroke со значением 'none')
+  */
+ :where([stroke]:not(
+   [stroke="none"],
+   [stroke^="url"]
+ )) {
+   stroke: currentColor;
+ }
+ 
+ /**
+   Чиним баг задержки смены цвета при взаимодействии с svg-элементами
+  */
+ svg * {
+   transition-property: fill, stroke;
+ }
+ 
+ /**
+   Приведение рамок таблиц в классический 'collapse' вид
+  */
+ :where(table) {
+   border-collapse: collapse;
+   border-color: currentColor;
+ }
+ 
+ /**
+   Удаляем все анимации и переходы для людей,
+   которые предпочитают их не использовать
+  */
+ @media (prefers-reduced-motion: reduce) {
+   *,
+   ::before,
+   ::after {
+     animation-duration: 0.01ms !important;
+     animation-iteration-count: 1 !important;
+     transition-duration: 0.01ms !important;
+     scroll-behavior: auto !important;
+   }
+ }
+
+
+@font-face {
+  font-family: 'Jost';
+  src: url(./Shrifts/Jost-Light.woff2) format('woff2');
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'Jost';
+  src: url(./Shrifts/Jost-Regular.woff2) format('woff2');
+  font-weight: 400;
+}
+
+
+
+body{
+  font-family: Jost;
+  transform: scale(1);
+  transform-origin: top left;
+  max-width: 2400px; 
+  overflow-x: auto; 
+  background: #FFF8F8;
+  
+}
+
+a,
+button,
+input,
+textarea {
+  transition: 0.3s ease-in-out;
+}
+
+
+a{
+  text-decoration: none;
+
+}
+
+a:hover{
+  color: lightpink;
+}
+
+
+
+img{
+  max-width: 100%;
+}
+
+.wrapper{
+  width: 100%;
+  padding: 50px 50px 135px 50px;
+}
+
+.header{
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  gap: 99px;
+}
+
+
+.header-nav-ul{
+  display: flex;
+  justify-content: space-between;
+  flex-grow: 1;
+  gap: 40px;
+  border-radius: 50px;
+  border: 1px solid #2F2F2F;
+  padding: 3px 30px;
+
+
+}
+
+
+.header-icons-ul{
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  flex-grow: 1;
+  border-radius: 50px;
+  border: 1px solid #2F2F2F;
+  background: #FFF8F8;
+  padding: 9px 13px;
+  align-items: center;
+}
+
+.header-logo{
+  font-family: Jost;
+  font-weight: 400;
+  font-size: 48px;  
+  color: #2F2F2F;
+}
+
+.header-nav-link{
+  color: #2F2F2F;
+  font-family: Jost;
+  font-weight: 400;
+  font-size: 32px;
+  display: inline-flex;
+  align-items: center;
+  height: 58px;
+
+}
+
+@font-face {
+  font-family: 'Jost';
+  src: url(./Shrifts/Jost-Light.woff2) format('woff2');
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'Jost';
+  src: url(./Shrifts/Jost-Regular.woff2) format('woff2');
+  font-weight: 400;
+}
+
+body{
+  font-family: Jost;
+  transform: scale(1);
+  transform-origin: top left;
+  max-width: 2400px; 
+  overflow-x: auto; 
+  background: #FFF8F8;
+}
+
+a,
+button,
+input,
+textarea {
+  transition: 0.3s ease-in-out;
+}
+
+a{
+  text-decoration: none;
+}
+
+a:hover{
+  color: lightpink;
+}
+
+button:hover{
+  color: lightpink;
+}
+
+img{
+  max-width: 100%;
+}
+
+.wrapper{
+  width: 100%;
+  padding: 50px 50px 135px 50px;
+}
+
+.header{
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  gap: 99px;
+  flex-wrap: wrap;
+}
+
+.header-nav-ul{
+  display: flex;
+  justify-content: space-between;
+  flex-grow: 1;
+  gap: 40px;
+  border-radius: 50px;
+  border: 1px solid #2F2F2F;
+  padding: 3px 30px;
+  max-width: 100%;
+}
+
+.header-icons-ul{
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  flex-grow: 1;
+  border-radius: 50px;
+  border: 1px solid #2F2F2F;
+  background: #FFF8F8;
+  padding: 9px 13px;
+  align-items: center;
+}
+
+.header-logo{
+  font-family: Jost;
+  font-weight: 400;
+  font-size: 48px;  
+  color: #2F2F2F;
+}
+
+.header-nav-link{
+  color: #2F2F2F;
+  font-family: Jost;
+  font-weight: 400;
+  font-size: 32px;
+  display: inline-flex;
+  align-items: center;
+  height: 58px;
+}
+
+/* Адаптив */
+@media (max-width: 1199px) {
+  .header-nav-ul {
+    gap: 15px;
+    padding: 5px 15px;
+  }
+  .header-nav-link {
+    font-size: 18px;
+  }
+  .header-icons-ul {
+    gap: 15px;
+  }
+}
+
+@media (max-width: 991px) {
+  .header {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .header-nav-ul {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .header-icons-ul {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 767px) {
+  .header-logo {
+    font-size: 28px;
+  }
+  .header-nav-ul {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+  }
+  .header-nav-link {
+    font-size: 16px;
+  }
+  .header-icons-ul {
+    flex-direction: row;
+    gap: 10px;
+    padding: 5px;
+  }
+  .header-icons-img {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+
+.banner{
+  position: relative;
+  width: 100%;
+  height: 800px;
+  background: url(./images/banner.png) lightgray -18.328px -55.527px / 102.443% 113.882%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin-top: 70px;
+  border-radius: 50px;
+  border: none;
+}
+
+.banner-first{
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  height: 278px;
+  padding: 10px 37px 0 13px;
+}
+
+
+
+.banner-h1{  
+  width: 1200px;
+  font-family: Jost;
+  font-weight: 400;
+  font-size: 96px;
+  text-align: right;
+  color: #2F2F2F;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: #33363F;
+  display: inline-block; 
+  padding-right: 37px; 
+}
+
+.banner-second{
+  position: absolute;
+  width: 671px;
+  height: 277px;
+  bottom: 21px;
+  left: 28px;
+  border-radius: 50px;
+  background: #FFF8F8;
+}
+
+.banner-second-link{
+  display: flex;
+  padding-top: 31px;
+  padding-left: 22px;
+  width: auto;
+  font-family: Jost;
+  font-weight: 400;
+  font-size: 32px;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+  text-underline-position: from-font;
+  color: #2F2F2F;
+}
+
+.banner-second-section{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 11px;
+  padding-left: 22px;
+  padding-bottom: 34px;
+}
+
+.banner-second-section img{
+  width: 203px;
+  height: 154px;
+  border-radius: 23px;
+}
+
+.banner-second-text{
+  font-family: Jost;
+  font-weight: 400;
+  font-size: 24px;
+  width: 100%;
+  height: 175px;
+  color: #2F2F2F;
+}
+
+.banner-third-button{
+  position: absolute;
+  right: 14px;
+  bottom: 21px;
+  display: flex;
+}
+
+.banner-button{
+  font-family: Jost;
+  font-weight: 400;
+  font-size: 40px;
+  width: 456px;
+  height: 103.958px;
+  border-radius: 50px;
+  border: 1px solid #33363F;
+  background: #FFF8F8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #2F2F2F;
+}
+
+@media screen and (max-width: 1024px) { 
+  .banner {
+    height: 600px;
+    border-radius: 30px;
+  }
+
+  .banner-first {
+    padding: 10px 20px;
+    height: auto;
+  }
+
+  .banner-h1 {
+    font-size: 72px;
+    width: 100%;
+  }
+
+  .banner-second {
+    width: 90%;
+    height: auto;
+    left: 5%;
+    bottom: 10px;
+    padding: 20px;
+    border-radius: 30px;
+  }
+
+  .banner-second-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .banner-second-section img {
+    width: 100%;
+    height: auto;
+  }
+
+  .banner-third {
+    width: 80%;
+    height: 80px;
+    right: 10%;
+    bottom: 10px;
+  }
+
+  .banner-link {
+    font-size: 32px;
+  }
+}
+
+@media screen and (max-width: 420px) { 
+  .banner {
+    height: 420px;
+    border-radius: 15px;
+    margin-top: 50px;
+  }
+
+  .banner-first {
+    padding: 5px;
+    height: auto;
+    justify-content: center;
+  }
+
+  .banner-h1 {
+    font-size: 36px;
+    text-align: center;
+    width: 100%;
+    padding: 0 10px;
+  }
+
+  .banner-second {
+    width: 95%;
+    height: auto;
+    left: 2.5%;
+    bottom: 10px;
+    padding: 12px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .banner-second-link {
+    font-size: 18px;
+    padding: 5px 0;
+  }
+
+  .banner-second-section {
+    flex-direction: column;
+    align-items: center;
+    padding: 5px;
+  }
+
+  .banner-second-section img {
+    width: 90%;
+    height: auto;
+    border-radius: 15px;
+  }
+
+  .banner-second-text {
+    font-size: 16px;
+    height: auto;
+    padding: 5px;
+  }
+
+  .banner-third {
+    width: 90%;
+    height: 50px;
+    right: 5%;
+    bottom: 5px;
+    border-radius: 15px;
+  }
+
+  .banner-link {
+    font-size: 20px;
+  }
+}
+
+
+.bestsell{
+  margin-top: 112px;
+}
+
+.bestsell-text{
+  display: flex;
+  justify-content: space-between;
+}
+
+.bestsell-text-h2{
+  font-family: Jost;
+  font-weight: 400;
+  font-size: 64px;
+  color:#2F2F2F;
+  width: 424px;
+}
+
+
+.bestsell-link-item{
+  font-family: Jost;
+  font-weight: 400;
+  font-size: 32px;
+  color: #2F2F2F;
+  padding-top: 36px;
+}
+
+.bestsell-img{
+  display: flex;
+  justify-content: space-between;
+  gap: 71px;
+  border-radius: 35px;
+  color:  solid #2F2F2F;
+}
+
+.bestsell-names{
+  display: flex;
+  justify-content: space-between;
+  padding-top: 20px;
+  gap: 100px;
+}
+
+
+.bestsellers{
+  display: flex;
+  justify-content: space-between;
+  gap: 71px;
+
+}
+
+.bestsellers-names{
+  font-family: Jost;
+  font-weight: 400;
+  font-size: 32px;
+  padding-top: 20px;
+}
+
+.product-pricing{
+  display: flex; 
+  align-items: center;
+}
+
+.current-price{
+  color: #000;
+  font-family: Jost;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.old-price{
+  color: #727070;
+  font-family: Jost;
+  font-size: 32px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration-line: strikethrough;
+}
+
+
+.catalog{
+  margin-top: 196px;
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+
+.catalog-point{
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.catalog-pont-p{
+  color: #2F2F2F;
+  font-family: Jost;
+  font-weight: 400;
+  font-size: 40px;
+}
+
+.catalog-point-button{
+  width: 224px;
+  height: 78px;
+  border-radius: 50px;
+  border: 1px solid #2F2F2F;
+  color: #2F2F2F;
+  font-family: Jost;
+  font-weight: 400;
+  font-size: 32px;
+}
+
+
+.catalog-types{
+  margin-top: 42px;
+}
+
+.catalog-li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 523px; 
+  position: relative;
+  padding-bottom: 25px; 
+}
+
+.catalog-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 523px;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.catalog-li-p{
+  width: 170px;
+  color: #2F2F2F;
+  font-family: Jost;
+  font-weight: 400;
+  font-size: 32px;
+}
+
+.catalog-li-img{
+  width: 34px;
+  height: 34px;
+}
+
+.about-us{
+  display: flex;
+  justify-content: space-between;
+  gap: 75px;
+  margin-top: 100px;
+}
+
+.about-us-h2{
+  color: #2F2F2F;
+  font-family: Jost;
+  font-size: 48px;
+  font-weight: 400;
+}
+
+.about-us-p1{
+  width: 683px;
+  padding-top: 30px;
+  color: #2F2F2F;
+  font-family: Jost;
+  font-size: 27px;
+  font-weight: 400;
+}
+
+.about-us-p2{
+  width: 683px;
+  padding-top: 30px;
+  color: #2F2F2F;
+  font-family: Jost;
+  font-size: 27px;
+  font-weight: 400;
+}
+
+.rex-text{
+  color: #2F2F2F;
+  font-family: Jost;
+  font-size: 64px;
+  font-weight: 400;
+}
+
+.rex{
+  margin-top: 157px;  
+}
+
+.rex-first{
+  padding-top: 26px;
+  display: flex;
+  justify-content: space-between;
+  gap: 46px;
+}
+
+.product-text{
+  color: #000;
+  font-family: Jost;
+  font-size: 32px;
+  font-weight: 400;
+  width: 300px;
+}
+
+.rex-second{
+  padding-top: 141px;
+  display: flex;
+  justify-content: space-between;
+  gap: 46px;
+}
